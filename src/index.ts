@@ -2,7 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import * as z from 'zod/v4';
-import { addIconToProject, getIconSvg, listIcons, searchIcons } from './lucide.js';
+import { addIconToProject, getIconMetadata, getIconSvg, listIcons, searchIcons } from './lucide.js';
 import packageJson from '../package.json' with { type: 'json' };
 
 function jsonText(value: unknown): string {
@@ -47,6 +47,23 @@ server.registerTool(
 
     return {
       content: [{ type: 'text', text: jsonText({ query, icons }) }],
+    };
+  },
+);
+
+server.registerTool(
+  'get_icon_metadata',
+  {
+    description: 'Get Lucide icon metadata such as tags, aliases, local SVG path, and suggestions for unknown icons.',
+    inputSchema: z.object({
+      name: z.string().describe('Lucide icon name, for example "search", "panel-left", or "chevron-right".'),
+    }),
+  },
+  async ({ name }) => {
+    const metadata = await getIconMetadata(name);
+
+    return {
+      content: [{ type: 'text', text: jsonText(metadata) }],
     };
   },
 );

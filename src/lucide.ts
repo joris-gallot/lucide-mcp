@@ -28,6 +28,16 @@ export type SvgOptions = {
   strokeWidth?: number;
 };
 
+export type IconMetadata = {
+  name: string;
+  exists: boolean;
+  path?: string;
+  parts?: string[];
+  tags?: string[];
+  aliases?: string[];
+  suggestions?: IconSearchResult[];
+};
+
 const semanticAliases: Record<string, string[]> = {
   account: ['user', 'profile', 'person'],
   add: ['plus', 'create', 'new'],
@@ -174,6 +184,29 @@ function expandQuery(query: string): string[] {
   const terms = uniqueTerms([query, ...normalizeIconName(query).split('-')]);
   const aliases = terms.flatMap((term) => semanticAliases[term] ?? []);
   return uniqueTerms([...terms, ...aliases]);
+}
+
+export async function getIconMetadata(name: string): Promise<IconMetadata> {
+  const normalizedName = normalizeIconName(name);
+  const searchableIcons = await getSearchableIcons();
+  const icon = searchableIcons.find((item) => item.name === normalizedName);
+
+  if (!icon) {
+    return {
+      name: normalizedName,
+      exists: false,
+      suggestions: await searchIcons(name, 5),
+    };
+  }
+
+  return {
+    name: icon.name,
+    exists: true,
+    path: path.join(getIconsDir(), `${icon.name}.svg`),
+    parts: icon.parts,
+    tags: icon.tags,
+    aliases: icon.aliases,
+  };
 }
 
 export async function searchIcons(query: string, limit = 10): Promise<IconSearchResult[]> {

@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { addIconToProject, getIconSvg, normalizeIconName, searchIcons } from '../src/lucide.ts';
+import { addIconToProject, getIconMetadata, getIconSvg, normalizeIconName, searchIcons } from '../src/lucide.ts';
 
 describe('lucide icons', () => {
   it('normalizes icon names', () => {
@@ -16,6 +16,22 @@ describe('lucide icons', () => {
 
     const settingsResults = await searchIcons('settings', 8);
     expect(settingsResults.some((icon) => icon.name === 'cog')).toBe(true);
+  });
+
+  it('gets icon metadata', async () => {
+    const metadata = await getIconMetadata('panel-left');
+
+    expect(metadata.exists).toBe(true);
+    expect(metadata.name).toBe('panel-left');
+    expect(metadata.path).toContain('panel-left.svg');
+    expect(metadata.tags).toContain('drawer');
+  });
+
+  it('returns suggestions for unknown icon metadata', async () => {
+    const metadata = await getIconMetadata('panel-left-missing');
+
+    expect(metadata.exists).toBe(false);
+    expect(metadata.suggestions?.length).toBeGreaterThan(0);
   });
 
   it('gets raw SVG markup', async () => {

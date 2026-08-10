@@ -9,6 +9,7 @@ MCP server for searching, retrieving, and adding [Lucide](https://lucide.dev) SV
 ## Tools
 
 - `search_icons` - search icons by exact, partial, and fuzzy name matching
+- `get_icon_metadata` - return tags, aliases, SVG path, and suggestions for an icon
 - `get_icon_svg` - return raw SVG markup for an icon
 - `add_icon_to_project` - write an SVG file into the current project
 - `list_icons` - list available Lucide icon names
@@ -45,6 +46,12 @@ Search for sidebar icons:
 
 ```txt
 search_icons({ "query": "sidebar", "limit": 5 })
+```
+
+Get icon metadata:
+
+```txt
+get_icon_metadata({ "name": "panel-left" })
 ```
 
 Get raw SVG:
