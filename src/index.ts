@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { McpServer } from '@modelcontextprotocol/server';
+import { McpServer, ResourceNotFoundError, ResourceTemplate } from '@modelcontextprotocol/server';
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import * as z from 'zod/v4';
 import { addIconToProject, getIconMetadata, getIconSvg, listIcons, searchIcons } from './lucide.js';
@@ -13,6 +13,29 @@ const server = new McpServer({
   name: 'lucide-mcp',
   version: packageJson.version,
 });
+
+server.registerResource(
+  'icon-svg',
+  new ResourceTemplate('lucide://icons/{name}.svg', {
+    list: undefined,
+  }),
+  {
+    title: 'Lucide icon SVG',
+    description: 'Raw SVG markup for a Lucide icon. Example: lucide://icons/panel-left.svg',
+    mimeType: 'image/svg+xml',
+  },
+  async (uri, { name }) => {
+    try {
+      const icon = await getIconSvg(String(name));
+
+      return {
+        contents: [{ uri: uri.href, mimeType: 'image/svg+xml', text: icon.svg }],
+      };
+    } catch {
+      throw new ResourceNotFoundError(uri.href);
+    }
+  },
+);
 
 server.registerTool(
   'list_icons',

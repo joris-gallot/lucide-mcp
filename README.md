@@ -6,6 +6,10 @@
 
 MCP server for searching, retrieving, and adding [Lucide](https://lucide.dev) SVG icons from AI coding agents.
 
+## Resources
+
+- `lucide://icons/{name}.svg` - read raw SVG markup for an icon, for example `lucide://icons/panel-left.svg`
+
 ## Tools
 
 - `search_icons` - search icons by exact, partial, and fuzzy name matching
@@ -54,7 +58,13 @@ Get icon metadata:
 get_icon_metadata({ "name": "panel-left" })
 ```
 
-Get raw SVG:
+Read SVG as a resource:
+
+```txt
+lucide://icons/panel-left.svg
+```
+
+Get raw SVG with a tool:
 
 ```txt
 get_icon_svg({ "name": "panel-left" })
