@@ -1,6 +1,6 @@
 {
   "name": "lucide-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MCP server for searching and retrieving Lucide SVG icons.",
   "type": "module",
   "bin": {
