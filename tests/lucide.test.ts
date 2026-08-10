@@ -26,6 +26,18 @@ describe('lucide icons', () => {
     expect(svg).toContain('lucide-panel-left');
   });
 
+  it('cleans SVG markup when requested', async () => {
+    const { svg } = await getIconSvg('panel-left', {
+      stripLicense: true,
+      stripClass: true,
+      strokeWidth: 1.5,
+    });
+
+    expect(svg).not.toContain('@license');
+    expect(svg).not.toContain('class="lucide');
+    expect(svg).toContain('stroke-width="1.5"');
+  });
+
   it('suggests icons for unknown names', async () => {
     await expect(getIconSvg('panel-left-missing')).rejects.toThrow(/Did you mean:/);
   });
@@ -34,9 +46,12 @@ describe('lucide icons', () => {
     const cwd = await mkdtemp(path.join(tmpdir(), 'lucide-mcp-'));
 
     try {
-      const first = await addIconToProject({ name: 'search', cwd });
+      const first = await addIconToProject({ name: 'search', cwd, stripLicense: true, stripClass: true });
       expect(first.path).toBe('assets/icons/search.svg');
-      await expect(readFile(path.join(cwd, first.path), 'utf8')).resolves.toContain('lucide-search');
+      const svg = await readFile(path.join(cwd, first.path), 'utf8');
+      expect(svg).toContain('<svg');
+      expect(svg).not.toContain('@license');
+      expect(svg).not.toContain('class="lucide');
 
       await expect(addIconToProject({ name: 'search', cwd })).rejects.toThrow(/File already exists/);
 

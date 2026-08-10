@@ -53,17 +53,30 @@ Get raw SVG:
 get_icon_svg({ "name": "panel-left" })
 ```
 
+Get cleaned SVG markup:
+
+```txt
+get_icon_svg({
+  "name": "panel-left",
+  "stripLicense": true,
+  "stripClass": true,
+  "strokeWidth": 1.5
+})
+```
+
 Add an icon to a project:
 
 ```txt
 add_icon_to_project({
   "name": "panel-left",
   "outputDir": "assets/icons",
-  "overwrite": false
+  "overwrite": false,
+  "stripLicense": true,
+  "stripClass": true
 })
 ```
 
-The default output directory is `assets/icons`. Existing files are not overwritten unless `overwrite` is set to `true`.
+The default output directory is `assets/icons`. Existing files are not overwritten unless `overwrite` is set to `true`. Use `stripLicense`, `stripClass`, and `strokeWidth` to customize the generated SVG markup.
 
 ## Agent behavior
 

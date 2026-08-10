@@ -22,6 +22,12 @@ export type IconSearchResult = {
   tags?: string[];
 };
 
+export type SvgOptions = {
+  stripLicense?: boolean;
+  stripClass?: boolean;
+  strokeWidth?: number;
+};
+
 const semanticAliases: Record<string, string[]> = {
   account: ['user', 'profile', 'person'],
   add: ['plus', 'create', 'new'],
@@ -236,7 +242,25 @@ export async function searchIcons(query: string, limit = 10): Promise<IconSearch
   return [...exactMatches, ...fuzzyMatches].slice(0, limit);
 }
 
-export async function getIconSvg(name: string): Promise<{ name: string; svg: string }> {
+function applySvgOptions(svg: string, options: SvgOptions = {}): string {
+  let output = svg;
+
+  if (options.stripLicense) {
+    output = output.replace(/^<!-- @license[\s\S]*?-->\n?/, '');
+  }
+
+  if (options.stripClass) {
+    output = output.replace(/\s+class="lucide[^"]*"/, '');
+  }
+
+  if (options.strokeWidth !== undefined) {
+    output = output.replace(/stroke-width="[^"]*"/, `stroke-width="${options.strokeWidth}"`);
+  }
+
+  return output;
+}
+
+export async function getIconSvg(name: string, options: SvgOptions = {}): Promise<{ name: string; svg: string }> {
   const normalizedName = normalizeIconName(name);
   const icons = await listIcons();
 
@@ -247,7 +271,7 @@ export async function getIconSvg(name: string): Promise<{ name: string; svg: str
   }
 
   const svg = await readFile(path.join(getIconsDir(), `${normalizedName}.svg`), 'utf8');
-  return { name: normalizedName, svg };
+  return { name: normalizedName, svg: applySvgOptions(svg, options) };
 }
 
 export async function addIconToProject(input: {
@@ -256,8 +280,15 @@ export async function addIconToProject(input: {
   filename?: string;
   cwd?: string;
   overwrite?: boolean;
+  stripLicense?: boolean;
+  stripClass?: boolean;
+  strokeWidth?: number;
 }): Promise<{ name: string; path: string; svg: string }> {
-  const { name, svg } = await getIconSvg(input.name);
+  const { name, svg } = await getIconSvg(input.name, {
+    stripLicense: input.stripLicense,
+    stripClass: input.stripClass,
+    strokeWidth: input.strokeWidth,
+  });
   const cwd = input.cwd ? path.resolve(input.cwd) : process.cwd();
   const outputDir = input.outputDir ? path.resolve(cwd, input.outputDir) : path.resolve(cwd, 'assets/icons');
   const filename = input.filename ? input.filename : `${name}.svg`;

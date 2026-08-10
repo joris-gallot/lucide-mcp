@@ -57,11 +57,14 @@ server.registerTool(
     description: 'Get the raw SVG markup for a Lucide icon by name.',
     inputSchema: z.object({
       name: z.string().describe('Lucide icon name, for example "search", "panel-left", or "chevron-right".'),
+      stripLicense: z.boolean().optional().describe('Remove the leading Lucide license comment from the SVG. Defaults to false.'),
+      stripClass: z.boolean().optional().describe('Remove the Lucide class attribute from the SVG element. Defaults to false.'),
+      strokeWidth: z.number().positive().optional().describe('Override the SVG stroke-width attribute.'),
     }),
   },
-  async ({ name }) => {
+  async ({ name, stripLicense, stripClass, strokeWidth }) => {
     try {
-      const icon = await getIconSvg(name);
+      const icon = await getIconSvg(name, { stripLicense, stripClass, strokeWidth });
 
       return {
         content: [{ type: 'text', text: icon.svg }],
@@ -84,11 +87,14 @@ server.registerTool(
       outputDir: z.string().optional().describe('Output directory relative to the MCP server working directory. Defaults to assets/icons.'),
       filename: z.string().optional().describe('Optional output filename. Defaults to the icon name with .svg.'),
       overwrite: z.boolean().optional().describe('Whether to overwrite an existing file. Defaults to false.'),
+      stripLicense: z.boolean().optional().describe('Remove the leading Lucide license comment from the SVG. Defaults to false.'),
+      stripClass: z.boolean().optional().describe('Remove the Lucide class attribute from the SVG element. Defaults to false.'),
+      strokeWidth: z.number().positive().optional().describe('Override the SVG stroke-width attribute.'),
     }),
   },
-  async ({ name, outputDir, filename, overwrite }) => {
+  async ({ name, outputDir, filename, overwrite, stripLicense, stripClass, strokeWidth }) => {
     try {
-      const result = await addIconToProject({ name, outputDir, filename, overwrite });
+      const result = await addIconToProject({ name, outputDir, filename, overwrite, stripLicense, stripClass, strokeWidth });
 
       return {
         content: [
