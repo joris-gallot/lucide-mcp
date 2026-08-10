@@ -1,0 +1,42 @@
+{
+  "name": "lucide-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for searching and retrieving Lucide SVG icons.",
+  "type": "module",
+  "bin": {
+    "lucide-mcp": "dist/index.mjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsdown && chmod +x dist/index.mjs",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "lucide",
+    "icons",
+    "svg",
+    "ai"
+  ],
+  "author": "Joris Gallot",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "fuse.js": "^7.5.0",
+    "lucide-static": "^1.31.0",
+    "zod": "^4.4.3"
+  },
+  "packageManager": "pnpm@11.21.0",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsdown": "^0.22.14",
+    "tsx": "^4.23.11",
+    "typescript": "^7.0.2"
+  }
+}
