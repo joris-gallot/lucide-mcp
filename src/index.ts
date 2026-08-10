@@ -15,7 +15,7 @@ const server = new McpServer({
 });
 
 server.registerTool(
-  'lucide_list_icons',
+  'list_icons',
   {
     description: 'List all available Lucide icon names.',
     inputSchema: z.object({
@@ -34,7 +34,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  'lucide_search_icons',
+  'search_icons',
   {
     description: 'Search Lucide icons by name using exact, partial, and fuzzy matching.',
     inputSchema: z.object({
@@ -52,7 +52,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  'lucide_get_icon_svg',
+  'get_icon_svg',
   {
     description: 'Get the raw SVG markup for a Lucide icon by name.',
     inputSchema: z.object({
@@ -76,7 +76,7 @@ server.registerTool(
 );
 
 server.registerTool(
-  'lucide_add_icon_to_project',
+  'add_icon_to_project',
   {
     description: 'Add a Lucide SVG icon file to the current project.',
     inputSchema: z.object({

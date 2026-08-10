@@ -4,10 +4,10 @@ MCP server for searching, retrieving, and adding [Lucide](https://lucide.dev) SV
 
 ## Tools
 
-- `lucide_search_icons` - search icons by exact, partial, and fuzzy name matching
-- `lucide_get_icon_svg` - return raw SVG markup for an icon
-- `lucide_add_icon_to_project` - write an SVG file into the current project
-- `lucide_list_icons` - list available Lucide icon names
+- `search_icons` - search icons by exact, partial, and fuzzy name matching
+- `get_icon_svg` - return raw SVG markup for an icon
+- `add_icon_to_project` - write an SVG file into the current project
+- `list_icons` - list available Lucide icon names
 
 ## Usage
 
@@ -40,19 +40,19 @@ With a local checkout:
 Search for sidebar icons:
 
 ```txt
-lucide_search_icons({ "query": "sidebar", "limit": 5 })
+search_icons({ "query": "sidebar", "limit": 5 })
 ```
 
 Get raw SVG:
 
 ```txt
-lucide_get_icon_svg({ "name": "panel-left" })
+get_icon_svg({ "name": "panel-left" })
 ```
 
 Add an icon to a project:
 
 ```txt
-lucide_add_icon_to_project({
+add_icon_to_project({
   "name": "panel-left",
   "outputDir": "assets/icons"
 })
