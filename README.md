@@ -54,11 +54,12 @@ Add an icon to a project:
 ```txt
 add_icon_to_project({
   "name": "panel-left",
-  "outputDir": "assets/icons"
+  "outputDir": "assets/icons",
+  "overwrite": false
 })
 ```
 
-The default output directory is `assets/icons`.
+The default output directory is `assets/icons`. Existing files are not overwritten unless `overwrite` is set to `true`.
 
 ## Agent behavior
 
@@ -74,6 +75,7 @@ Agents can use this server when they need an icon for a UI feature and the proje
 
 ```sh
 pnpm install
+pnpm test
 pnpm build
 pnpm typecheck
 ```

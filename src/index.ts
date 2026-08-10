@@ -83,11 +83,12 @@ server.registerTool(
       name: z.string().describe('Lucide icon name, for example "search", "panel-left", or "chevron-right".'),
       outputDir: z.string().optional().describe('Output directory relative to the MCP server working directory. Defaults to assets/icons.'),
       filename: z.string().optional().describe('Optional output filename. Defaults to the icon name with .svg.'),
+      overwrite: z.boolean().optional().describe('Whether to overwrite an existing file. Defaults to false.'),
     }),
   },
-  async ({ name, outputDir, filename }) => {
+  async ({ name, outputDir, filename, overwrite }) => {
     try {
-      const result = await addIconToProject({ name, outputDir, filename });
+      const result = await addIconToProject({ name, outputDir, filename, overwrite });
 
       return {
         content: [

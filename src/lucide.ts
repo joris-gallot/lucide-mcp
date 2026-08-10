@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js';
 import { createRequire } from 'node:module';
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { access, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
@@ -254,6 +255,7 @@ export async function addIconToProject(input: {
   outputDir?: string;
   filename?: string;
   cwd?: string;
+  overwrite?: boolean;
 }): Promise<{ name: string; path: string; svg: string }> {
   const { name, svg } = await getIconSvg(input.name);
   const cwd = input.cwd ? path.resolve(input.cwd) : process.cwd();
@@ -262,6 +264,21 @@ export async function addIconToProject(input: {
   const filePath = path.resolve(outputDir, filename.endsWith('.svg') ? filename : `${filename}.svg`);
 
   await mkdir(path.dirname(filePath), { recursive: true });
+
+  if (!input.overwrite) {
+    try {
+      await access(filePath, constants.F_OK);
+      throw new Error(`File already exists: ${path.relative(cwd, filePath)}. Pass overwrite: true to replace it.`);
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+        await writeFile(filePath, svg, 'utf8');
+        return { name, path: path.relative(cwd, filePath), svg };
+      }
+
+      throw error;
+    }
+  }
+
   await writeFile(filePath, svg, 'utf8');
 
   return { name, path: path.relative(cwd, filePath), svg };
