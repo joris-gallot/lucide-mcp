@@ -1,5 +1,9 @@
 # lucide-mcp
 
+[![npm version](https://img.shields.io/npm/v/lucide-mcp.svg)](https://www.npmjs.com/package/lucide-mcp)
+[![CI](https://github.com/joris-gallot/lucide-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/joris-gallot/lucide-mcp/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/lucide-mcp.svg)](./LICENSE)
+
 MCP server for searching, retrieving, and adding [Lucide](https://lucide.dev) SVG icons from AI coding agents.
 
 ## Tools
