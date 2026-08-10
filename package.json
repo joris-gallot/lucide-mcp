@@ -26,6 +26,14 @@
   ],
   "author": "Joris Gallot",
   "license": "MIT",
+  "homepage": "https://github.com/joris-gallot/lucide-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joris-gallot/lucide-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joris-gallot/lucide-mcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
     "fuse.js": "^7.5.0",
